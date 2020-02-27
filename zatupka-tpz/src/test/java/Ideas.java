@@ -1,5 +1,3 @@
-import org.junit.Test;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -201,7 +199,7 @@ public class Ideas {
         return file.readLong();
     }
 
-    @Test
+    //@Test этот тест уже не работает, оставлено просто так
     public void simple_tpt() throws Exception {
         for (final Path p : Files.newDirectoryStream(Paths.get("C:\\workspace\\tpz_svalka\\esr"), "*.tpt")) {
             if (true) {
@@ -218,7 +216,7 @@ public class Ideas {
         }
     }
 
-    @Test
+    //@Test этот тест уже не работает, оставлено просто так
     public void xi_content() throws Exception {
         for (final Path p : Files.newDirectoryStream(Paths.get("C:\\workspace\\_xicontent\\"), "*.ZIP")) {
             System.out.println(p);

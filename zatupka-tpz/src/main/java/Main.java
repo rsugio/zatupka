@@ -14,18 +14,17 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Package m = Main.class.getPackage();
 
-        String s = MessageFormat.format("{0} {2} by {1}", new Object[]{Main.class.getPackage().getImplementationTitle(), Main.class.getPackage().getImplementationVendor(), Main.class.getPackage().getImplementationVersion()});
-        System.out.println(s);
+        System.out.println(MessageFormat.format("{0} {2} by {1}", Main.class.getPackage().getImplementationTitle(), Main.class.getPackage().getImplementationVendor(), Main.class.getPackage().getImplementationVersion()));
         if (args.length == 0) {
-            System.out.println("Использование: список tpz-файлов, ожидайте создания парных zip-файлов");
-            System.exit(-1);
+            System.out.println(" Использование: список tpz-файлов, ожидайте создания парных zip-файлов");
+            System.exit(0);
         }
-        for (int i = 0; i < args.length; i++) {
-            final Path p = Paths.get(args[i]);
+        for (String arg : args) {
+            final Path p = Paths.get(arg);
             if (!p.getFileName().toString().endsWith(".tpz")) {
-                System.err.println(MessageFormat.format("Файл {0} должен называться *.tpz, пропущен", new Object[]{p}));
+                System.err.println(MessageFormat.format("Файл {0} должен называться *.tpz, пропущен", p));
             } else if (Files.isRegularFile(p)) {
-                System.err.println(MessageFormat.format("Обработка файла {0} начата", new Object[]{p}));
+                System.err.println(MessageFormat.format("Обработка файла {0} начата", p));
                 ZipInputStream zis = new ZipInputStream(Files.newInputStream(p));
                 ZipEntry ze = zis.getNextEntry();
                 while (ze != null) {
@@ -43,19 +42,19 @@ public class Main {
                             if (cr.isXml && cr.lengthData > 0) {
                                 cr.validateXml(ztp.getBytes());
                             }
-                            ZipEntry zo = new ZipEntry(MessageFormat.format("{1}_{0}.{2}", new Object[]{cr.type, cr.idx, cr.isXml ? "xml" : "bin"}));
+                            ZipEntry zo = new ZipEntry(MessageFormat.format("{1}_{0}.{2}", cr.type, cr.idx, cr.isXml ? "xml" : "bin"));
                             zos.putNextEntry(zo);
                             zos.write(ztp.getBytes(), cr.beginData, cr.lengthData);
                             zos.flush();
                             zos.closeEntry();
                         }
                         zos.close();
-                        System.err.println(MessageFormat.format("Создан файл {0}", new Object[]{rez}));
+                        System.err.println(MessageFormat.format("Создан файл {0}", rez));
                     }
                     ze = zis.getNextEntry();
                 }
             } else {
-                System.err.println(MessageFormat.format("Файл {0} отсутствует", new Object[]{p}));
+                System.err.println(MessageFormat.format("Файл {0} отсутствует", p));
             }
 
 

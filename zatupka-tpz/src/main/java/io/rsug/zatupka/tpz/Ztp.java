@@ -17,7 +17,7 @@ public class Ztp {
      * Разбор распакованного транспортного файла
      *
      * @author iliya.kuznetsov@gmail.com
-     * @version 0.0.1
+     * @version 0.0.2
      */
     private byte[] unpaged = null;
     final List<CatRec> records = new ArrayList<>(128);
@@ -80,9 +80,12 @@ public class Ztp {
         final int pageSize = 0x100000;
         int actualRead = pageSize, crcRead = 0;
         byte[] pageBytes = new byte[pageSize], eight = new byte[8];
+//        final byte[] etalon = new byte[]{0, 0, 0, 0};
 
         while (actualRead == pageSize) {
             boolean z8 = eight[0] == 0 && eight[1] == 0 && eight[2] == 0 && eight[3] == 0;
+//            boolean z = Arrays.mismatch(etalon, eight) > 3;
+//            assert z == z8;
 
             int x = 1;
             actualRead = is.read(pageBytes);

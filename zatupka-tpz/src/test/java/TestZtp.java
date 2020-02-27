@@ -22,7 +22,7 @@ public class TestZtp {
             for (final ZtpFile f : files) {
                 System.out.println(f.fileName);
                 for (final CatRec cr : f.records) {
-                    String s = new MessageFormat("[{0}]_{1}.{2} length {3} bytes").format(new Object[]{cr.idx, cr.type, cr.isXml ? "xml" : "bin", cr.lengthData});
+                    String s = MessageFormat.format("[{0}]_{1}.{2} length {3} bytes", cr.idx, cr.type, cr.isXml ? "xml" : "bin", cr.lengthData);
                     System.out.print(s);
                     if (cr.isXml && cr.lengthData > 0) {
                         f.validateXml(cr);
@@ -37,7 +37,7 @@ public class TestZtp {
 
     @Test
     public void unpage() throws Exception {
-        boolean saveExtracted = true;
+        boolean saveExtracted = false;
         OutputStream os;
         for (final Path p : Files.newDirectoryStream(Paths.get("C:\\workspace\\tpz_svalka\\esr"), "*.??t")) {
             final int sz = (int) Files.size(p);
@@ -48,7 +48,7 @@ public class TestZtp {
             assert unpagedBytes.length <= sz;
             is.close();
 
-            System.out.println(new MessageFormat("File {0} source length={1,number}, unpacked={2,number}").format(new Object[]{p, sz, unpagedBytes.length}));
+            System.out.println(MessageFormat.format("File {0} source length={1,number}, unpacked={2,number}", p, sz, unpagedBytes.length));
             if (saveExtracted) {
                 os = Files.newOutputStream(p.resolveSibling(p + ".unpaged"));
                 os.write(unpagedBytes);
@@ -62,7 +62,7 @@ public class TestZtp {
                 os.close();
             }
             for (final CatRec cr : records) {
-                String fn = new MessageFormat("{0}_{1}_{2}.{3}").format(new Object[]{p, cr.idx, cr.type, cr.isXml ? "xml" : "bin"});
+                String fn = MessageFormat.format("{0}_{1}_{2}.{3}", p, cr.idx, cr.type, cr.isXml ? "xml" : "bin");
                 if (saveExtracted) {
                     os = Files.newOutputStream(Paths.get(fn));
                     os.write(unpagedBytes, cr.beginData, cr.lengthData);
@@ -73,5 +73,10 @@ public class TestZtp {
                 }
             }
         }
+    }
+
+    @Test
+    public void header() {
+
     }
 }
